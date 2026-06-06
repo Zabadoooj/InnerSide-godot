@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://d11pegwwkr334"]
+
+[ext_resource type="PackedScene" path="res://Components/Player/player.tscn" id="1_sls21"]
+
+[node name="GameScene" type="Node3D" unique_id=781052209]
+
+[node name="Player" parent="." unique_id=1080068821 instance=ExtResource("1_sls21")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=210534387]
+transform = Transform3D(1, 0, 0, 0, 0.47402677, 0.88051045, 0, -0.88051045, 0.47402677, 0, 4.789198, 0)
