@@ -10,10 +10,8 @@ config_version=5
 
 [application]
 
-config/name="InnerSide_proto1"
-run/main_scene="uid://b0rvd0kjxbvs7"
+run/main_scene="uid://d11pegwwkr334"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
 
 [physics]
 
@@ -22,3 +20,10 @@ config/icon="res://icon.svg"
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+
+[shader_globals]
+
+default_gravity={
+"type": "float",
+"value": 9.8
+}

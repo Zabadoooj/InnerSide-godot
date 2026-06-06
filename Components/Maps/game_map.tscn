@@ -1,10 +1,40 @@
 [gd_scene format=3 uid="uid://d11pegwwkr334"]
 
-[ext_resource type="PackedScene" path="res://Components/Player/player.tscn" id="1_sls21"]
+[ext_resource type="PackedScene" uid="uid://leutjixc8xp3" path="res://Components/Objects/Player/Node_PlayerController.tscn" id="1_sls21"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_sls21"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_02atj"]
+
+[sub_resource type="Sky" id="Sky_02atj"]
+sky_material = SubResource("ProceduralSkyMaterial_02atj")
+
+[sub_resource type="Environment" id="Environment_02atj"]
+sky = SubResource("Sky_02atj")
+ambient_light_source = 3
+ambient_light_color = Color(0.34642112, 0.5414712, 0.68352824, 1)
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_sls21"]
+
+[sub_resource type="Compositor" id="Compositor_s3x8j"]
 
 [node name="GameScene" type="Node3D" unique_id=781052209]
 
-[node name="Player" parent="." unique_id=1080068821 instance=ExtResource("1_sls21")]
+[node name="Floor" type="Node3D" parent="." unique_id=324232488]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=210534387]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1287788815]
+transform = Transform3D(13.901666, 0, 0, 0, 1, 0, 0, 0, 15.375268, 0, -0.61783147, 0)
+mesh = SubResource("BoxMesh_sls21")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=905708895]
+environment = SubResource("Environment_02atj")
+camera_attributes = SubResource("CameraAttributesPractical_sls21")
+compositor = SubResource("Compositor_s3x8j")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=210534387]
 transform = Transform3D(1, 0, 0, 0, 0.47402677, 0.88051045, 0, -0.88051045, 0.47402677, 0, 4.789198, 0)
+
+[node name="TestPgys" type="Node3D" parent="." unique_id=82226082]
+
+[node name="PlayerController" parent="." unique_id=1064522884 instance=ExtResource("1_sls21")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0037527084, 0, 0.23685479)
