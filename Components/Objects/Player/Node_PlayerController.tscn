@@ -23,9 +23,10 @@ shape = SubResource("CylinderShape3D_t81dc")
 [node name="Head" type="Node3D" parent="." unique_id=1873336198 node_paths=PackedStringArray("player_controller", "component_mouse_capture")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5306717, 0.0024300218)
 script = ExtResource("1_cayb4")
-debug = true
 player_controller = NodePath("..")
 component_mouse_capture = NodePath("../Components/MouseCapture")
+tilt_lower_limit = -90
+tilt_upper_limit = 80
 
 [node name="Camera3D" type="Camera3D" parent="Head" unique_id=1263782275]
 
@@ -33,4 +34,3 @@ component_mouse_capture = NodePath("../Components/MouseCapture")
 
 [node name="MouseCapture" type="Node" parent="Components" unique_id=1023145931]
 script = ExtResource("1_16bwf")
-debug = true

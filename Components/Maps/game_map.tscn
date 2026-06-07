@@ -2,8 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://leutjixc8xp3" path="res://Components/Objects/Player/Node_PlayerController.tscn" id="1_sls21"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_sls21"]
-
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_02atj"]
 
 [sub_resource type="Sky" id="Sky_02atj"]
@@ -12,19 +10,18 @@ sky_material = SubResource("ProceduralSkyMaterial_02atj")
 [sub_resource type="Environment" id="Environment_02atj"]
 sky = SubResource("Sky_02atj")
 ambient_light_source = 3
-ambient_light_color = Color(0.34642112, 0.5414712, 0.68352824, 1)
+ambient_light_color = Color(0.48420393, 0.6762509, 0.81761324, 1)
+fog_enabled = true
+fog_light_color = Color(0.45264256, 0.6365533, 0.7192094, 1)
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_sls21"]
 
 [sub_resource type="Compositor" id="Compositor_s3x8j"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sls21"]
+albedo_color = Color(0.902265, 0.87998855, 0.83791417, 1)
+
 [node name="GameScene" type="Node3D" unique_id=781052209]
-
-[node name="Floor" type="Node3D" parent="." unique_id=324232488]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1287788815]
-transform = Transform3D(13.901666, 0, 0, 0, 1, 0, 0, 0, 15.375268, 0, -0.61783147, 0)
-mesh = SubResource("BoxMesh_sls21")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=905708895]
 environment = SubResource("Environment_02atj")
@@ -32,9 +29,29 @@ camera_attributes = SubResource("CameraAttributesPractical_sls21")
 compositor = SubResource("Compositor_s3x8j")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=210534387]
-transform = Transform3D(1, 0, 0, 0, 0.47402677, 0.88051045, 0, -0.88051045, 0.47402677, 0, 4.789198, 0)
+transform = Transform3D(-0.8953779, 0.39209762, -0.21108752, 0, 0.47402677, 0.88051045, 0.44530714, 0.78838956, -0.42443305, 0, 4.789198, 0)
+
+[node name="Floor" type="Node3D" parent="." unique_id=324232488]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Floor" unique_id=1804321344]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.291687, 0, 1.5611267)
+use_collision = true
+size = Vector3(13.136108, 1, 17.317383)
+material = SubResource("StandardMaterial3D_sls21")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Floor" unique_id=1376603321]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4807291, 1.1712661, 3.5854416)
+use_collision = true
+size = Vector3(3.4890747, 2.5170898, 4.690689)
+material = SubResource("StandardMaterial3D_sls21")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Floor" unique_id=1167053527]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.291687, 7.6346846, 1.5611267)
+use_collision = true
+size = Vector3(13.136108, 1, 10.848633)
+material = SubResource("StandardMaterial3D_sls21")
 
 [node name="TestPgys" type="Node3D" parent="." unique_id=82226082]
 
 [node name="PlayerController" parent="." unique_id=1064522884 instance=ExtResource("1_sls21")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0037527084, 0, 0.23685479)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0037527084, 2.179962, -2.8119762)
