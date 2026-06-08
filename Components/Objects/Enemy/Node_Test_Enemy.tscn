@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cj0gsdqf6iv0t"]
 
 [ext_resource type="Script" uid="uid://c0wuxwmdjvf3a" path="res://Components/Objects/Enemy/Script_Enemy.gd" id="1_i7564"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tadbo"]
+[ext_resource type="PackedScene" uid="uid://bgmwpsbrir4gq" path="res://Components/Objects/Enemy/Node_DropItem.tscn" id="2_yapvc"]
+[ext_resource type="Script" uid="uid://dxmhduc7der3e" path="res://Components/Objects/Enemy/Script_PathCheck.gd" id="3_yc743"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tadbo"]
 albedo_color = Color(0.909482, 0.20342088, 0, 1)
@@ -10,13 +10,37 @@ albedo_color = Color(0.909482, 0.20342088, 0, 1)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_tadbo"]
 material = SubResource("StandardMaterial3D_tadbo")
 
+[sub_resource type="SphereMesh" id="SphereMesh_yapvc"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tadbo"]
+
 [node name="NodeTestEnemy" type="CharacterBody3D" unique_id=165803029]
 script = ExtResource("1_i7564")
+drop_scene = ExtResource("2_yapvc")
+
+[node name="Model" type="Node3D" parent="." unique_id=257210294]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model" unique_id=1401779221]
+transform = Transform3D(0.9999471, -0.0061110537, -0.0082794335, 0.0061870003, 0.9999387, 0.009177317, 0.008222835, -0.009228063, 0.9999236, 0, 1.004192, 0)
+mesh = SubResource("CapsuleMesh_tadbo")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Model" unique_id=492504090]
+transform = Transform3D(1.0062946, -0.005551382, -0.0044537224, 0.0062262737, 0.9083608, 0.004936717, 0.008275032, -0.008382925, 0.5378849, 0, 1.3517491, -0.3087445)
+mesh = SubResource("SphereMesh_yapvc")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=834819104]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.004192, 0)
 shape = SubResource("CapsuleShape3D_tadbo")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1401779221]
-transform = Transform3D(0.9999471, -0.0061110537, -0.0082794335, 0.0061870003, 0.9999387, 0.009177317, 0.008222835, -0.009228063, 0.9999236, 0, 1.004192, 0)
-mesh = SubResource("CapsuleMesh_tadbo")
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1748376986]
+debug_enabled = true
+
+[node name="PathCheck" type="Node3D" parent="." unique_id=1163252447]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4452755, -0.41360712)
+script = ExtResource("3_yc743")
+
+[node name="RayCast3D" type="RayCast3D" parent="PathCheck" unique_id=976346202]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+collide_with_areas = true
+debug_shape_custom_color = Color(0.1396766, 0.6047556, 7.70092e-07, 1)
+debug_shape_thickness = 5

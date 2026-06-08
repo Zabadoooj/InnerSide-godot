@@ -4,7 +4,7 @@ class_name AttackComponent extends Node3D
 @export_category("Настройки атаки")
 @export var attack_action : String = "attack"
 @export var attack_damage : int = 1
-@export var attack_range : float = 2.5
+@export var attack_range : float = 3
 @export var has_item_in_hand : bool = false
 @export var debug : bool = false
 
@@ -25,7 +25,7 @@ var _player : CharacterBody3D = null
 var _dash_velocity : Vector3 = Vector3.ZERO
 var _dash_timer : float = 0.0              # Сколько осталось рывка
 
-# Кулдаун
+# Кулдаун атаки
 var _cooldown_timer : float = 0.0
 
 
@@ -110,7 +110,7 @@ func _start_dash_to_target(target: Node3D) -> void:
 		return
 
 	var to_target : Vector3 = target.global_position - _player.global_position
-	to_target.y = 0.0
+	#to_target.y = 0.0
 
 	if to_target.length() < 0.01:
 		return
@@ -121,7 +121,7 @@ func _start_dash_to_target(target: Node3D) -> void:
 	var speed : float = actual_distance / dash_duration
 
 	_dash_velocity = to_target.normalized() * speed
-	_dash_timer    = dash_duration
+	_dash_timer = dash_duration
 
 	if debug:
 		print("AttackComponent: рывок %.2f м за %.2f сек" % [actual_distance, dash_duration])
