@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://56hb4edclxxu" path="res://Components/Objects/Player/Script_MouseController.gd" id="1_16bwf"]
 [ext_resource type="Script" uid="uid://di1ait2ao4xyi" path="res://Components/Objects/Player/Script_CameraController.gd" id="1_cayb4"]
 [ext_resource type="Script" uid="uid://bq0rspgb5v83n" path="res://Components/Objects/Player/Script_PlayerController.gd" id="1_vpiby"]
+[ext_resource type="Script" uid="uid://1ixla44drsn7" path="res://Components/Objects/Player/Script_AttackComponent.gd" id="3_1o8ye"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_t81dc"]
 
@@ -13,7 +14,7 @@ height = 1.9999999
 script = ExtResource("1_vpiby")
 
 [node name="PlaceholderMesh" type="MeshInstance3D" parent="." unique_id=265063141]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9892409, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.9, 0, 0.9892409, 0)
 mesh = SubResource("CapsuleMesh_t81dc")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=296431572]
@@ -29,6 +30,14 @@ tilt_lower_limit = -90
 tilt_upper_limit = 80
 
 [node name="Camera3D" type="Camera3D" parent="Head" unique_id=1263782275]
+
+[node name="AttackComponent" type="Node3D" parent="Head/Camera3D" unique_id=759819738]
+script = ExtResource("3_1o8ye")
+
+[node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D/AttackComponent" unique_id=1769191162]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 5
 
 [node name="Components" type="Node" parent="." unique_id=1592422915]
 
