@@ -7,7 +7,6 @@ class_name Enemy extends CharacterBody3D
 @export_category("Настройки врага")
 @export var max_health : int = 3 # Количество ударов до смерти
 @export var flash_duration : float = 0.15 # Длительность мигания при уроне
-@export var enemy_walk_speed : float = 5.0
 
 @export_category("Дроп")
 
@@ -15,22 +14,41 @@ class_name Enemy extends CharacterBody3D
 @export var drop_scene: PackedScene
 @export var drop_count: int = 2
 
+@export_category("Движение")
+@export var enemy_walk_speed : float = randf_range(2.0, 5.0)
+@export var current_state : States
 
 var _current_health : int
 var _mesh_instance : MeshInstance3D       # Ссылка на меш для эффекта мигания
 var rotation_speed: float = 8.0 
 
+enum States {
+	IDLE,
+	WALKING,
+	CHASING
+}
+
 
 func find_path() -> void:
+	current_state = States.WALKING
+	
 	var random_position : Vector3 = Vector3.ZERO
 	random_position.x = randf_range(-10.0, 10.0)
 	random_position.z = randf_range(-10.0, 10.0)
 	nav_agent.set_target_position(random_position)
 	
+	#print()
+
+func _on_navigation_agent_3d_navigation_finished() -> void:
+	current_state = States.IDLE
 	
+	if current_state != States.CHASING:
+		find_path()
 
 
 func _ready() -> void:
+	current_state = States.IDLE
+	
 	_current_health = max_health
 	
 	if randi_range(0, 1) == 1:
@@ -44,8 +62,8 @@ func _ready() -> void:
 	if _mesh_instance == null:
 		push_warning("Enemy: не найден MeshInstance3D среди дочерних нодов")
 	
-	
-	find_path()
+	if current_state != States.CHASING:
+		find_path()
 
 
 func _physics_process(delta: float) -> void:
@@ -55,7 +73,8 @@ func _physics_process(delta: float) -> void:
 	
 	velocity = direction * enemy_walk_speed
 	
-	move_and_slide()
+	if current_state == States.WALKING or States.CHASING:
+		move_and_slide()
 	
 	var move_direction: Vector3 = Vector3(velocity.x, 0, velocity.z)
 	
