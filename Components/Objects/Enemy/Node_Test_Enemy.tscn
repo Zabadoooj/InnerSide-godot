@@ -36,7 +36,7 @@ shape = SubResource("CapsuleShape3D_tadbo")
 debug_enabled = true
 
 [node name="PathCheck" type="Node3D" parent="." unique_id=1163252447]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9440471, -0.41360712)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9844909, -0.41360712)
 script = ExtResource("3_yc743")
 
 [node name="BarrierChecker" type="RayCast3D" parent="PathCheck" unique_id=976346202]
@@ -48,5 +48,7 @@ debug_shape_thickness = 5
 [node name="PlayerChecker" type="RayCast3D" parent="PathCheck" unique_id=286855207]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.520082, -0.119558394)
 target_position = Vector3(0, -5, 0)
+
+[node name="StateMachine" type="Node" parent="." unique_id=1161441745]
 
 [connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_navigation_finished"]

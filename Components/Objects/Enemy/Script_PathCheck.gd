@@ -6,7 +6,7 @@ class_name EnemyPathCheck extends Node3D
 @export_flags_3d_physics var raycast_collision_mask : int = 1
 
 
-var check_radius : float = 2.0
+var check_radius : float = 1.0
 var player_check_radius : float = 5.0
 
 

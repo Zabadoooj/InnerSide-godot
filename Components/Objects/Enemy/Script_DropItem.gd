@@ -10,5 +10,6 @@ enum UpgradeType {
 
 @export var upgrade_type: UpgradeType
 
+
 func _ready() -> void:
 	print("Drop type:", UpgradeType.keys()[upgrade_type])

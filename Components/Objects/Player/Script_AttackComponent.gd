@@ -1,88 +1,118 @@
 class_name AttackComponent extends Node3D
 
+## Обработка атак игрока
+## 
+## Обрабатывает ввод атаки ближнего боя через рейкаст
+## [br] Получает данные с рейкаста (дальности атаки) и работает с ними
 
-@export_category("Настройки атаки")
-@export var attack_action : String = "attack"
-@export var attack_damage : int = 1
-@export var attack_range : float = 3
-@export var has_item_in_hand : bool = false
+## Отладка
 @export var debug : bool = false
 
-@export_category("Настройки рывка")
-@export_range(0.0, 2.0) var dash_distance : float = 1.0    # Сколько метров пролетит игрок
-@export_range(0.0001, 0.002) var dash_duration : float = 0.001   # За сколько секунд пролетит (короче = резче)
+@export_category("Настройки атаки")
+@export var attack_action : String = "attack"	## Задается кнопка атаки
+@export var attack_damage : int = 1				## Урон от атаки
+@export var attack_range : float = 3			## Радиус, в котором игрок может атакавать
+@export var can_attack : bool = false			## Может ли игрок атакавать в данный момент
+
+
+@export_category("Настройки рывка при атаке вблизи")
+## Сколько метров пролетит игрок при атаке
+@export_range(0.0, 2.0) var dash_distance : float = 1.0
+## За сколько секунд пролетит (короче = резче)
+@export_range(0.0001, 0.002) var dash_duration : float = 0.001
+
 
 @export_category("Настройки кулдауна")
-@export var attack_cooldown : float = 0.3  # Секунд между атаками
+@export var attack_cooldown : float = 0.3	## Промежуток в секунды между атаками
 
+
+## Настройки коллизии рейкаста атаки
 @export_flags_3d_physics var raycast_collision_mask : int = 1
 
-@onready var _raycast : RayCast3D = $RayCast3D
+## Получаем рейкаст, которым будем считывать возможность атаки в данный момент
+@onready var _raycast : RayCast3D = $RayCast3D	
 
+## Ссылка на игрока
 var _player : CharacterBody3D = null
 
-# Рывок
-var _dash_velocity : Vector3 = Vector3.ZERO
-var _dash_timer : float = 0.0              # Сколько осталось рывка
+## Рывок
+var _dash_velocity : Vector3 = Vector3.ZERO		## Получаем направление рывка
+var _dash_timer : float = 0.0					## Сколько осталось рывка
 
-# Кулдаун атаки
+## Кулдаун атаки
 var _cooldown_timer : float = 0.0
+
+### Функции
 
 
 func _ready() -> void:
+	## Проверяет наличие рейкаста у игрока ( на всякий случай )
 	if _raycast == null:
 		push_error("AttackComponent: не найден дочерний RayCast3D!")
 		return
-
-	_raycast.enabled         = true
+	
+	## Включаем рейкаст ( на всякий случай )
+	_raycast.enabled = true
+	## Устанавливаем сторону рейкаста ( радиус атаки игрока ) [param attack_range]
 	_raycast.target_position = Vector3(0.0, -attack_range, 0.0)
-	_raycast.collision_mask  = raycast_collision_mask
-
+	## Дополнительно ставим маску рейкаста, чтоб он реагировал на объекты в определенных группах
+	_raycast.collision_mask = raycast_collision_mask
+	
+	## Получаем игрока
 	_player = _get_parent_of_type(self, CharacterBody3D)
+	## Проверяем удалось-ли найти игрока
 	if _player != null:
-		_raycast.add_exception(_player)
+		_raycast.add_exception(_player)		## Добавляет игрока в список исключений проверки рейкаста
 	else:
 		push_error("AttackComponent: CharacterBody3D не найден в родителях!")
 
 
+## Если нажимаем атаку - пытаемся атакавать 
 func _unhandled_input(event: InputEvent) -> void:
+	## Проверяем нажатие на кнопку атаки
 	if event.is_action_pressed(attack_action):
 		_try_attack()
 
 
+## Всякие обработки
 func _physics_process(delta: float) -> void:
-	# Тикаем таймеры
+	## Тикаем таймеры
 	if _cooldown_timer > 0.0:
 		_cooldown_timer -= delta
 
 	if _dash_timer > 0.0:
 		_dash_timer -= delta
 
-		# Добавляем скорость рывка ПОВЕРХ текущей velocity игрока.
-		# Так движение от ввода не блокируется — просто получает доп. импульс.
+		## Добавляем скорость рывка ПОВЕРХ текущей velocity игрока
+		## Так движение от ввода не блокируется — просто получает доп. импульс
 		if _player != null:
-			_player.velocity.x += _dash_velocity.x * delta
-			_player.velocity.z += _dash_velocity.z * delta
-
+			_player.velocity.x += _dash_velocity.x * delta		## Двигаем игрока в сторону врага по оси Х
+			_player.velocity.z += _dash_velocity.z * delta		## Двигаем игрока в сторону врага по оси Z
+		
+		## Если таймерк кулдауна рывка <= 0 - то обнуляем скорость рывка к врагу
 		if _dash_timer <= 0.0:
 			_dash_velocity = Vector3.ZERO
+			
+			## Если вклчен дебаг
 			if debug:
 				print("AttackComponent: рывок завершён")
-
+	
+	## Если включен дебаг
 	if debug and _raycast.is_colliding():
 		print("RayCast видит: ", _raycast.get_collider().name)
 
 
-# --- Приватные методы ---
+## --- Приватные методы ---
 
+## Попытка атаки
 func _try_attack() -> void:
-	# Кулдаун ещё не прошёл
+	## Кулдаун ещё не прошёл
 	if _cooldown_timer > 0.0:
 		if debug:
 			print("AttackComponent: кулдаун %.2f сек" % _cooldown_timer)
 		return
 
-	if has_item_in_hand:
+	if can_attack:
 		if debug:
 			print("AttackComponent: атака заблокирована — в руках предмет")
 		return
@@ -110,13 +140,12 @@ func _start_dash_to_target(target: Node3D) -> void:
 		return
 
 	var to_target : Vector3 = target.global_position - _player.global_position
-	#to_target.y = 0.0
 
 	if to_target.length() < 0.01:
 		return
 
-	# Скорость рывка = расстояние / время. delta потом превратит её в м/кадр.
-	# Но мы не хотим лететь дальше dash_distance — ограничиваем реальным расстоянием.
+	## Скорость рывка = расстояние / время. delta потом превратит её в м/кадр
+	## Но мы не хотим лететь дальше dash_distance — ограничиваем реальным расстоянием
 	var actual_distance : float = minf(to_target.length(), dash_distance)
 	var speed : float = actual_distance / dash_duration
 

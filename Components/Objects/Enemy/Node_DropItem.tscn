@@ -9,7 +9,7 @@ radius = 0.77043706
 script = ExtResource("1_y05sb")
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="." unique_id=807902991]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4588086, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28994757, 0)
 radius = 0.2875117
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1562985608]
